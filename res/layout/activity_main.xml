@@ -22,9 +22,34 @@
         android:layout_below="@+id/textView1"
         android:layout_marginTop="58dp"
         android:ems="10"
-        android:inputType="textPersonName" >
+        android:inputType="textPersonName" />
 
-        <requestFocus />
-    </EditText>
+      
+    <EditText
+        android:id="@+id/response"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="30dp"
+        android:editable="false"
+        android:ems="10" />
+
+    <Button
+        android:id="@+id/get"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/response"
+        android:layout_alignLeft="@+id/response"
+        android:layout_marginBottom="54dp"
+        android:text="Get greeting" />
+
+    <EditText
+        android:id="@+id/friend_identity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/get"
+        android:layout_alignLeft="@+id/get"
+        android:ems="10" />
 
 </RelativeLayout>
