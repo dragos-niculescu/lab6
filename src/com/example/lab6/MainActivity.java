@@ -51,6 +51,40 @@ public class MainActivity extends Activity {
 			}
 		}
  
+		private class ResponderThread extends Thread {
+			Socket s; 
+            ResponderThread(Socket s){
+            	this.s = s; 
+            }
+			@Override
+            public void run() {
+				// Get its associated OutputStream for writing.
+				OutputStream responseStream = null;
+				try {
+					responseStream = s.getOutputStream();
+				} catch (IOException e) {
+					Log.e(TAG, "Cannot get outputstream.");
+				}
+
+				// Wrap it with a PrinStream for convenience.
+				PrintStream writer = new PrintStream(responseStream);
+				try { Thread.sleep(3000, 0);} 
+				catch (InterruptedException e) {	}
+				writer.print(greeting + "\n");
+
+				// Make sure data is sent and allocated resources are cleared.
+				try {
+					s.close();
+				} catch (IOException e) {
+					Log.e(TAG, "Error finishing request.");
+				}
+
+				Log.d(TAG, "Sent greeting.");
+				// Continue the looping.
+            }
+		}
+		
+		
 		@Override
 		public void run() {
 
@@ -59,7 +93,9 @@ public class MainActivity extends Activity {
 
 				//For every request we are allocated a new socket.
 				Socket incomingRequest = null;
+				Thread responder; 
 
+				
 				try {
 					// Wait in blocked state for a request.
 					incomingRequest = in.accept();
@@ -70,7 +106,12 @@ public class MainActivity extends Activity {
 				// When accept() returns a new request was received.
 				// We use the incomingRequest socket for I/O
 				Log.d(TAG, "New request from: " + incomingRequest.getInetAddress());
-
+				
+				ResponderThread t; 
+				t = new ResponderThread(incomingRequest);
+				t.start();
+				
+				/*
 				// Get its associated OutputStream for writing.
 				OutputStream responseStream = null;
 				try {
@@ -94,6 +135,9 @@ public class MainActivity extends Activity {
 
 				Log.d(TAG, "Sent greeting.");
 				// Continue the looping.
+				*/
+				
+				
 			}
 			try {
 				in.close();
